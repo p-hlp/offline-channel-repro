@@ -1,30 +1,17 @@
-# React + TypeScript + Vite
+# Offline Channel Repro
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Reproduces issue mentioned in [#2368](https://github.com/microsoft/ApplicationInsights-JS/issues/2368).
 
-Currently, two official plugins are available:
+## How to run
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Add an `.env` file, copy variable from `.env.template` and add app insights connection string.
 
-## Expanding the ESLint configuration
+Run `pnpm install` then `pnpm dev`.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Repro steps
 
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+1. Set offlineListeners `onlineState` to 'offline' with provided toggle button
+2. Press 'send offline event' a few times, check local storage for for persisted events
+3. Set `onlineState` to 'online' again
+4. Either wait or send a few more 'test events'
+5. Check next `track` request, only test events are sent, local storage still contains the offline events

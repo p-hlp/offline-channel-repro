@@ -1,35 +1,39 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import "./App.css";
+import { appInsights, offlineChannel } from "./main";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [isOnline, setIsOnline] = useState(true);
+
+  const sendAiEvent = (eventName: string) => {
+    appInsights.trackEvent({ name: eventName });
+  };
+
+  const sendOfflineEvent = () => sendAiEvent("OfflineEvent");
+  const sendNormalEvent = () => sendAiEvent("TestEvent");
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
+      <h2>{`Offline Channel Demo - onlineState ${isOnline ? 1 : 2}`}</h2>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+        <button
+          onClick={() =>
+            setIsOnline((isOnline) => {
+              const offlineListener = offlineChannel.getOfflineListener();
+              const val = !isOnline ? 1 : 2;
+              console.log("Setting offlineListener onlineState:", val);
+              offlineListener.setOnlineState(val);
+              return !isOnline;
+            })
+          }
+        >
+          {isOnline ? "Set to offline" : "Set to online"}
         </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
+        <button onClick={sendNormalEvent}>Send Test Event</button>
+        <button onClick={sendOfflineEvent}>Send Offline Event</button>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

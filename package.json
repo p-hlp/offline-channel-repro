@@ -11,7 +11,10 @@
   },
   "dependencies": {
     "react": "18.3.1",
-    "react-dom": "18.3.1"
+    "react-dom": "18.3.1",
+    "@microsoft/applicationinsights-react-js": "17.2.0",
+    "@microsoft/applicationinsights-web": "3.2.2",
+    "@microsoft/applicationinsights-offlinechannel-js": "0.2.2"
   },
   "devDependencies": {
     "@types/react": "18.3.3",
