@@ -26,6 +26,7 @@ export const appInsights = new ApplicationInsights({
         providers: [1],
         minPesistanceLevel: EventPersistence.Normal,
         inMemoMaxTime: 0,
+        maxSentBatchInterval: 0,
       },
     },
     enableCorsCorrelation: true,
